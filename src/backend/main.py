@@ -17,7 +17,19 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
-model = genai.GenerativeModel("gemini-2.0-flash-001")
+model = genai.GenerativeModel("gemini-2.0-flash-001", generation_config={
+        "temperature": 0.2,
+        "top_k": 40,
+        "max_output_tokens": 1024
+    }, system_instruction="""    You are an expert summarization system specialized in condensing books and articles while preserving key information.
+    
+    SUMMARIZATION INSTRUCTIONS:
+    1. Identify and prioritize the main themes, arguments, and conclusions
+    2. Preserve essential details, examples, and supporting evidence
+    3. Maintain the author's original meaning and intent
+    4. Use clear, concise language without unnecessary words
+    5. Follow a logical flow that connects ideas coherently
+    6. If the input is general, respond in a general way, like a greeting.""")
 
 @app.get("/")
 def read_root():
@@ -26,16 +38,10 @@ def read_root():
 @app.get("/ai")
 def summarize(text: str):
     prompt = (
-        "You are a helpful assistant that only summarizes books and articles. "
-        "You do not answer questions unrelated to summarization. "
-        "If a request is outside this scope, politely decline and redirect the user to ask for a summary. "
-        f"{text}"
+       f'''{text}
+    '''
     )
     
-    response = model.generate_content(prompt, generation_config={
-        "temperature": 0.3,
-        "top_k": 20,
-        "max_output_tokens": 512
-    })
+    response = model.generate_content(prompt, )
 
     return {"message": response.text}
