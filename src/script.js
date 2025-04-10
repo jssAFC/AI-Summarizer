@@ -65,7 +65,7 @@ function createUserDiv(userText) {
     const div = document.createElement('div');
     const svgElement = document.createElement('div');
     svgElement.innerHTML = `<svg
-        class="h-10 w-10 text-indigo-900 p-1 rounded-full bg-white"
+        class="h-10 w-10 text-indigo-900 p-1 rounded-full bg-white "
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
@@ -80,7 +80,7 @@ function createUserDiv(userText) {
     p.textContent = userText;
     p.classList.add('text-xl');
     div.append(svgElement,p);
-    div.classList.add('w-full', 'p-4','px-8', 'rounded-lg', 'text-white','items-center','flex','gap-6');
+    div.classList.add('w-full', 'p-2','px-8', 'rounded-lg', 'text-white','items-center','flex','gap-6','items-start');
     parentDiv.insertBefore(div, mainDiv);
     const inputField = document.getElementById("input-field");
     inputField.value = ""; // Clear input
@@ -124,17 +124,21 @@ function createBookDiv(aiText) {
           />
         </svg>`
     const p=document.createElement('p');
-    p.innerHTML = aiText;
+    // p.innerHTML = aiText;
     p.classList.add('text-xl','text-indigo-900','bg-white','rounded-lg','p-2');
     div.append(svgElement,p);
-    div.classList.add('w-full', 'p-4','px-8', 'rounded-lg', 'text-white','items-center','flex','gap-6');
+    div.classList.add('w-full', 'p-4','px-8', 'rounded-lg', 'text-white','items-center','flex','gap-6','items-start','animate-pulse');
     parentDiv.insertBefore(div, mainDiv);
 
-    setTimeout(() => {
-        div.classList.remove('animate-pulse','p-5');
-        div.classList.add('p-2');
-        p.innerHTML = aiText;
-    }, 1200);
+
+        setTimeout(() => {
+            div.classList.remove('animate-pulse','p-4');
+            div.classList.add('p-2');
+            p.innerHTML = convertTextToHTML(aiText);
+        }, 2000);
+ 
+
+  
 }
 
 async function generateText(event) {
@@ -145,9 +149,10 @@ async function generateText(event) {
 
     createUserDiv(inputValue);
 
-
     const response = await fetchMessage(inputValue);
     createBookDiv(response);
-    parentDiv.scrollTop = parentDiv.scrollHeight;
-
+    
+    setTimeout(() => {
+        parentDiv.scrollTop = parentDiv.scrollHeight;
+    }, 800); // Wait slightly longer than the animation delay
 }

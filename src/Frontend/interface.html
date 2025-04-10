@@ -14,11 +14,11 @@
   </head>
 
   <body
-    class="max-h-screen bg-gradient-to-b from-black via-black to-indigo-900 flex justify-center items-center flex-col gap-4 p-4 px-8 font-heading"
+    class="max-h-screen bg-gradient-to-b from-black via-black to-indigo-900 scroll-smooth flex justify-center items-center flex-col gap-4 p-4 px-8 font-heading"
   >
   <div class="flex gap-2 items-center justify-center">
     <svg
-          class="min-h-14 max-h-14 text-white "
+          class="min-h-12 max-h-12 text-white "
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -51,7 +51,7 @@
             d="M8.5 5H10V3.5C10 2.67 9.33 2 8.5 2S7 2.67 7 3.5 7.67 5 8.5 5z"
           />
         </svg>
-    <h1 class="text-6xl font-heading bg-white text-transparent bg-clip-text mb-1.5">
+    <h1 class="text-5xl font-heading bg-white text-transparent bg-clip-text mb-1.5">
       QuickGist
     </h1>
   </div>
@@ -76,6 +76,7 @@
               id="input-field"
               required="true"
               autocomplete="off"
+              style="overflow-y: scroll;"
             />
             <button onclick="generateText(event)" type="submit">
               <svg
