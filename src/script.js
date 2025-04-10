@@ -1,26 +1,46 @@
 function convertTextToHTML(text) {
+    if (!text || typeof text !== 'string') {
+        return '<p>Error: Invalid input text.</p>';
+    }
+
+    // Replace **bold** syntax with <strong> HTML tags
     text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
 
+    // Replace __italic__ syntax with <em> HTML tags
+    text = text.replace(/__(.*?)__/g, '<em>$1</em>');
+
+    // Replace double newlines with paragraph breaks
+    text = text.replace(/\n\n/g, '<br><br>');
+
+    // Split text into lines or list items
     const lines = text.split(/\n|(?=\* )/g);
-    let inList = false;
-    let html = '';
+    let inList = false; // Tracks whether we are inside a list
+    let html = ''; // Stores the resulting HTML
 
     for (let line of lines) {
-        if (line.trim().startsWith('*')) {
+        const trimmedLine = line.trim();
+
+        // Check if the line starts with a list item marker (*)
+        if (trimmedLine.startsWith('*')) {
             if (!inList) {
+                // Start a new unordered list if not already in one
                 html += '<ul>';
                 inList = true;
             }
-            html += `<li>${line.replace(/^\*\s*/, '')}</li>`;
-        } else {
+            // Add the list item, removing the marker (*)
+            html += `<li>${trimmedLine.replace(/^\*\s*/, '')}</li>`;
+        } else if (trimmedLine) {
             if (inList) {
+                // Close the unordered list if transitioning out of a list
                 html += '</ul>';
                 inList = false;
             }
-            html += `<p>${line.trim()}</p>`;
+            // Add the line as a paragraph
+            html += `<p>${trimmedLine}</p>`;
         }
     }
 
+    // Close any remaining open list
     if (inList) html += '</ul>';
 
     return html;
